@@ -10,7 +10,7 @@ const swaggerOptions = {
             description: 'API de gestion du Port de Plaisance Russell - Catways, Réservations, Utilisateurs',
             contact: { name: 'Capitainerie', email: 'contact@port-russell.fr' }
         },
-        servers: [{ url: 'http://localhost:4000', description: 'Développement' }],
+        servers: [{ url: 'http://localhost:3000', description: 'Développement' }],
         components: {
             securitySchemes: {
                 bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }

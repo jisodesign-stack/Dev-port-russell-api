@@ -119,7 +119,7 @@ Après `npm run import-data` :
 ## ⚙️ Variables d'environnement
 
 ```env
-PORT=4000
+PORT=3000
 MONGODB_URI=mongodb://localhost:27017/port-russell
 JWT_SECRET=votre_secret_jwt
 SESSION_SECRET=votre_secret_session
