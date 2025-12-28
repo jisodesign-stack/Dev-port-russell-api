@@ -58,10 +58,15 @@ const User = require('./models/User');
 
 app.get('/setup', async (req, res) => {
     try {
-        const userExists = await User.findOne({ email: 'admin@port-russell.fr' });
-        if (userExists) {
-            return res.json({ message: '✅ Données déjà initialisées', login: 'admin@port-russell.fr' });
+        // Vérifier d'abord la connexion MongoDB
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(500).json({ error: 'MongoDB non connecté', state: mongoose.connection.readyState });
         }
+
+        // Nettoyer les données existantes
+        await Catway.deleteMany({});
+        await Reservation.deleteMany({});
+        await User.deleteMany({});
 
         const catways = [
             { catwayNumber: 1, catwayType: "short", catwayState: "bon état" },
@@ -113,7 +118,8 @@ app.get('/setup', async (req, res) => {
             login: { email: 'admin@port-russell.fr', password: 'admin123' }
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Setup error:', error);
+        res.status(500).json({ error: error.message, stack: error.stack });
     }
 });
 
