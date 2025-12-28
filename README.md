@@ -32,8 +32,8 @@ API de gestion du port de plaisance de Russell : catways, réservations et utili
 
 ```bash
 # Cloner et installer
-git clone <url-du-repo>
-cd port-russell-api
+git clone https://github.com/jisodesign-stack/Dev-port-russell-api.git
+cd Dev-port-russell-api
 npm install
 
 # Configurer l'environnement
