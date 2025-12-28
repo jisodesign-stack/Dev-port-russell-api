@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-life-preserver"></i> Gestion des Catways</h2>
+        <a href="/catways/new" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nouveau Catway
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Liste des catways</span>
+            <span class="badge bg-primary"><%= catways.length %> catways</span>
+        </div>
+        <div class="card-body">
+            <% if (catways.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Type</th>
+                                <th>État</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% catways.forEach(function(catway) { %>
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-dark">#<%= catway.catwayNumber %></span>
+                                    </td>
+                                    <td>
+                                        <% if (catway.catwayType === 'long') { %>
+                                            <span class="badge badge-long bg-info">Long</span>
+                                        <% } else { %>
+                                            <span class="badge badge-short bg-warning text-dark">Short</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (catway.catwayState === 'bon état') { %>
+                                            <span class="text-success"><i class="bi bi-check-circle"></i> <%= catway.catwayState %></span>
+                                        <% } else { %>
+                                            <span class="text-warning"><i class="bi bi-exclamation-triangle"></i> <%= catway.catwayState %></span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/catways/<%= catway.catwayNumber %>" class="btn btn-sm btn-outline-primary btn-action" title="Voir">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/catways/<%= catway.catwayNumber %>/reservations" class="btn btn-sm btn-outline-success btn-action" title="Réservations">
+                                            <i class="bi bi-calendar-check"></i>
+                                        </a>
+                                        <a href="/catways/<%= catway.catwayNumber %>/edit" class="btn btn-sm btn-outline-warning btn-action" title="Modifier">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="/catways/<%= catway.catwayNumber %>?_method=DELETE" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger btn-action" 
+                                                    data-confirm="Êtes-vous sûr de vouloir supprimer ce catway ?" title="Supprimer">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-life-preserver display-1"></i>
+                    <p class="mt-3">Aucun catway enregistré</p>
+                    <a href="/catways/new" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Créer le premier catway
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

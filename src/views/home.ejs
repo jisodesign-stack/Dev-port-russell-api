@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 mb-4">
+            <i class="bi bi-water"></i> Port de Plaisance Russell
+        </h1>
+        <p class="lead mb-4">
+            Bienvenue sur le système de gestion de la capitainerie.<br>
+            Gérez les catways, les réservations et les utilisateurs.
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card login-card shadow">
+                <div class="card-header text-center py-3">
+                    <h5 class="mb-0"><i class="bi bi-shield-lock"></i> Connexion</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form action="/login" method="POST">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="votre@email.com" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Votre mot de passe" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-box-arrow-in-right"></i> Se connecter
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="/api-docs" class="btn btn-outline-secondary" target="_blank">
+                    <i class="bi bi-file-code"></i> Accéder à la documentation API
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center">
+    <div class="container">
+        <p class="mb-0">&copy; 2024 Port de Plaisance Russell - Tous droits réservés</p>
+    </div>
+</footer>
+
+<%- include('partials/footer') %>

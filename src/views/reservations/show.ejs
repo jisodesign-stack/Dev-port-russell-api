@@ -1,0 +1,116 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="/catways">Catways</a></li>
+            <li class="breadcrumb-item"><a href="/catways/<%= catway.catwayNumber %>">Catway #<%= catway.catwayNumber %></a></li>
+            <li class="breadcrumb-item"><a href="/catways/<%= catway.catwayNumber %>/reservations">Réservations</a></li>
+            <li class="breadcrumb-item active">Détails</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-calendar-check"></i> Détails de la réservation</span>
+                    <% 
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const startDate = new Date(reservation.startDate);
+                    const endDate = new Date(reservation.endDate);
+                    let status = '';
+                    let statusClass = '';
+                    
+                    if (endDate < today) {
+                        status = 'Terminée';
+                        statusClass = 'bg-secondary';
+                    } else if (startDate <= today && endDate >= today) {
+                        status = 'En cours';
+                        statusClass = 'bg-success';
+                    } else {
+                        status = 'À venir';
+                        statusClass = 'bg-info';
+                    }
+                    %>
+                    <span class="badge <%= statusClass %>"><%= status %></span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-muted mb-3">Informations du catway</h5>
+                            <dl class="row">
+                                <dt class="col-sm-5">Numéro</dt>
+                                <dd class="col-sm-7">
+                                    <a href="/catways/<%= catway.catwayNumber %>">#<%= catway.catwayNumber %></a>
+                                </dd>
+
+                                <dt class="col-sm-5">Type</dt>
+                                <dd class="col-sm-7">
+                                    <% if (catway.catwayType === 'long') { %>
+                                        <span class="badge bg-info">Long</span>
+                                    <% } else { %>
+                                        <span class="badge bg-warning text-dark">Short</span>
+                                    <% } %>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-muted mb-3">Informations client</h5>
+                            <dl class="row">
+                                <dt class="col-sm-5">Client</dt>
+                                <dd class="col-sm-7"><%= reservation.clientName %></dd>
+
+                                <dt class="col-sm-5">Bateau</dt>
+                                <dd class="col-sm-7"><i class="bi bi-sailboat"></i> <%= reservation.boatName %></dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="text-muted mb-3">Période de réservation</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <small class="text-muted">Date de début</small>
+                                    <h4 class="mb-0"><%= startDate.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <small class="text-muted">Date de fin</small>
+                                    <h4 class="mb-0"><%= endDate.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+                        <a href="/catways/<%= catway.catwayNumber %>/reservations/<%= reservation._id %>/edit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Modifier
+                        </a>
+                        <form action="/catways/<%= catway.catwayNumber %>/reservations/<%= reservation._id %>?_method=DELETE" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cette réservation ?">
+                                <i class="bi bi-trash"></i> Supprimer
+                            </button>
+                        </form>
+                        <a href="/catways/<%= catway.catwayNumber %>/reservations" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

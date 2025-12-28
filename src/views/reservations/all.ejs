@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-calendar-check"></i> Toutes les Réservations</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Liste complète des réservations</span>
+            <span class="badge bg-primary"><%= reservations.length %> réservation(s)</span>
+        </div>
+        <div class="card-body">
+            <% if (reservations.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Catway</th>
+                                <th>Client</th>
+                                <th>Bateau</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% 
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            reservations.forEach(function(reservation) { 
+                                const startDate = new Date(reservation.startDate);
+                                const endDate = new Date(reservation.endDate);
+                                let status = '';
+                                let statusClass = '';
+                                
+                                if (endDate < today) {
+                                    status = 'Terminée';
+                                    statusClass = 'bg-secondary';
+                                } else if (startDate <= today && endDate >= today) {
+                                    status = 'En cours';
+                                    statusClass = 'bg-success';
+                                } else {
+                                    status = 'À venir';
+                                    statusClass = 'bg-info';
+                                }
+                            %>
+                                <tr>
+                                    <td>
+                                        <a href="/catways/<%= reservation.catwayNumber %>" class="text-decoration-none">
+                                            <span class="badge bg-secondary">#<%= reservation.catwayNumber %></span>
+                                        </a>
+                                    </td>
+                                    <td><%= reservation.clientName %></td>
+                                    <td><i class="bi bi-sailboat"></i> <%= reservation.boatName %></td>
+                                    <td><%= startDate.toLocaleDateString('fr-FR') %></td>
+                                    <td><%= endDate.toLocaleDateString('fr-FR') %></td>
+                                    <td><span class="badge <%= statusClass %>"><%= status %></span></td>
+                                    <td>
+                                        <a href="/catways/<%= reservation.catwayNumber %>/reservations/<%= reservation._id %>" 
+                                           class="btn btn-sm btn-outline-primary btn-action" title="Voir">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/catways/<%= reservation.catwayNumber %>/reservations/<%= reservation._id %>/edit" 
+                                           class="btn btn-sm btn-outline-warning btn-action" title="Modifier">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="/catways/<%= reservation.catwayNumber %>/reservations/<%= reservation._id %>?_method=DELETE" 
+                                              method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger btn-action" 
+                                                    data-confirm="Êtes-vous sûr de vouloir supprimer cette réservation ?" title="Supprimer">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-calendar-x display-1"></i>
+                    <p class="mt-3">Aucune réservation enregistrée</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

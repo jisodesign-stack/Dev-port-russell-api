@@ -1,0 +1,109 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="/catways">Catways</a></li>
+            <li class="breadcrumb-item active">Catway #<%= catway.catwayNumber %></li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-life-preserver"></i> Catway #<%= catway.catwayNumber %></span>
+                    <% if (catway.catwayType === 'long') { %>
+                        <span class="badge bg-info">Long</span>
+                    <% } else { %>
+                        <span class="badge bg-warning text-dark">Short</span>
+                    <% } %>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Numéro</dt>
+                        <dd class="col-sm-8"><%= catway.catwayNumber %></dd>
+
+                        <dt class="col-sm-4">Type</dt>
+                        <dd class="col-sm-8"><%= catway.catwayType %></dd>
+
+                        <dt class="col-sm-4">État</dt>
+                        <dd class="col-sm-8">
+                            <% if (catway.catwayState === 'bon état') { %>
+                                <span class="text-success"><i class="bi bi-check-circle"></i> <%= catway.catwayState %></span>
+                            <% } else { %>
+                                <span class="text-warning"><i class="bi bi-exclamation-triangle"></i> <%= catway.catwayState %></span>
+                            <% } %>
+                        </dd>
+
+                        <dt class="col-sm-4">Créé le</dt>
+                        <dd class="col-sm-8"><%= new Date(catway.createdAt).toLocaleDateString('fr-FR') %></dd>
+                    </dl>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+                        <a href="/catways/<%= catway.catwayNumber %>/edit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Modifier l'état
+                        </a>
+                        <a href="/catways/<%= catway.catwayNumber %>/reservations/new" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i> Nouvelle réservation
+                        </a>
+                        <form action="/catways/<%= catway.catwayNumber %>?_method=DELETE" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer ce catway ?">
+                                <i class="bi bi-trash"></i> Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-calendar-check"></i> Réservations</span>
+                    <span class="badge bg-primary"><%= reservations.length %></span>
+                </div>
+                <div class="card-body">
+                    <% if (reservations.length > 0) { %>
+                        <ul class="list-group list-group-flush">
+                            <% reservations.forEach(function(reservation) { %>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="fw-bold">
+                                            <i class="bi bi-sailboat"></i> <%= reservation.boatName %>
+                                        </div>
+                                        <small class="text-muted"><%= reservation.clientName %></small><br>
+                                        <small class="text-muted">
+                                            Du <%= new Date(reservation.startDate).toLocaleDateString('fr-FR') %> 
+                                            au <%= new Date(reservation.endDate).toLocaleDateString('fr-FR') %>
+                                        </small>
+                                    </div>
+                                    <a href="/catways/<%= catway.catwayNumber %>/reservations/<%= reservation._id %>" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <div class="text-center text-muted py-3">
+                            <i class="bi bi-calendar-x"></i>
+                            <p class="mb-0">Aucune réservation</p>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="card-footer">
+                    <a href="/catways/<%= catway.catwayNumber %>/reservations" class="btn btn-outline-primary btn-sm">
+                        Voir toutes les réservations
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

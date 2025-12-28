@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="/users">Utilisateurs</a></li>
+            <li class="breadcrumb-item active"><%= userDetails.username %></li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-person-circle"></i> Détails de l'utilisateur
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="display-1 text-primary">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <h3><%= userDetails.username %></h3>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8"><code><%= userDetails._id %></code></dd>
+
+                        <dt class="col-sm-4">Nom d'utilisateur</dt>
+                        <dd class="col-sm-8"><%= userDetails.username %></dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8"><%= userDetails.email %></dd>
+
+                        <dt class="col-sm-4">Inscrit le</dt>
+                        <dd class="col-sm-8"><%= new Date(userDetails.createdAt).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></dd>
+
+                        <dt class="col-sm-4">Dernière modification</dt>
+                        <dd class="col-sm-8"><%= new Date(userDetails.updatedAt).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></dd>
+                    </dl>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+                        <a href="/users/<%= userDetails.email %>/edit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Modifier
+                        </a>
+                        <% if (userDetails.email !== user.email) { %>
+                            <form action="/users/<%= userDetails.email %>?_method=DELETE" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cet utilisateur ?">
+                                    <i class="bi bi-trash"></i> Supprimer
+                                </button>
+                            </form>
+                        <% } %>
+                        <a href="/users" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

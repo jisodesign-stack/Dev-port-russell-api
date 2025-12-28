@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="/users">Utilisateurs</a></li>
+            <li class="breadcrumb-item"><a href="/users/<%= userDetails.email %>"><%= userDetails.username %></a></li>
+            <li class="breadcrumb-item active">Modifier</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-pencil"></i> Modifier l'utilisateur
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i>
+                        <strong>Note :</strong> L'adresse email ne peut pas être modifiée. Laissez le mot de passe vide pour ne pas le modifier.
+                    </div>
+
+                    <form action="/users/<%= userDetails.email %>?_method=PUT" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Adresse email</label>
+                            <input type="email" class="form-control" value="<%= userDetails.email %>" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur *</label>
+                            <input type="text" class="form-control" id="username" name="username" 
+                                   value="<%= userDetails.username %>" minlength="3" maxlength="50" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Nouveau mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   minlength="6" placeholder="Laisser vide pour ne pas modifier">
+                            <div class="form-text">Minimum 6 caractères si vous souhaitez le modifier</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Enregistrer les modifications
+                            </button>
+                            <a href="/users/<%= userDetails.email %>" class="btn btn-secondary">
+                                <i class="bi bi-x-lg"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

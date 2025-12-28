@@ -1,0 +1,80 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="/catways">Catways</a></li>
+            <li class="breadcrumb-item"><a href="/catways/<%= catway.catwayNumber %>">Catway #<%= catway.catwayNumber %></a></li>
+            <li class="breadcrumb-item"><a href="/catways/<%= catway.catwayNumber %>/reservations">Réservations</a></li>
+            <li class="breadcrumb-item active">Nouvelle</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-plus-circle"></i> Nouvelle réservation - Catway #<%= catway.catwayNumber %>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-4">
+                        <strong>Catway :</strong> #<%= catway.catwayNumber %> (<%= catway.catwayType %>)<br>
+                        <strong>État :</strong> <%= catway.catwayState %>
+                    </div>
+
+                    <form action="/catways/<%= catway.catwayNumber %>/reservations" method="POST">
+                        <div class="mb-3">
+                            <label for="clientName" class="form-label">Nom du client *</label>
+                            <input type="text" class="form-control" id="clientName" name="clientName" 
+                                   minlength="2" maxlength="100" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="boatName" class="form-label">Nom du bateau *</label>
+                            <input type="text" class="form-control" id="boatName" name="boatName" 
+                                   minlength="2" maxlength="100" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="startDate" class="form-label">Date de début *</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="endDate" class="form-label">Date de fin *</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" required>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Créer la réservation
+                            </button>
+                            <a href="/catways/<%= catway.catwayNumber %>/reservations" class="btn btn-secondary">
+                                <i class="bi bi-x-lg"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Définir la date minimale à aujourd'hui
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').setAttribute('min', today);
+        
+        // Mettre à jour la date de fin minimale quand la date de début change
+        document.getElementById('startDate').addEventListener('change', function() {
+            document.getElementById('endDate').setAttribute('min', this.value);
+        });
+    });
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="/catways">Catways</a></li>
+            <li class="breadcrumb-item"><a href="/catways/<%= catway.catwayNumber %>">Catway #<%= catway.catwayNumber %></a></li>
+            <li class="breadcrumb-item"><a href="/catways/<%= catway.catwayNumber %>/reservations">Réservations</a></li>
+            <li class="breadcrumb-item active">Modifier</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-pencil"></i> Modifier la réservation
+                </div>
+                <div class="card-body">
+                    <form action="/catways/<%= catway.catwayNumber %>/reservations/<%= reservation._id %>?_method=PUT" method="POST">
+                        <div class="mb-3">
+                            <label for="clientName" class="form-label">Nom du client *</label>
+                            <input type="text" class="form-control" id="clientName" name="clientName" 
+                                   value="<%= reservation.clientName %>" minlength="2" maxlength="100" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="boatName" class="form-label">Nom du bateau *</label>
+                            <input type="text" class="form-control" id="boatName" name="boatName" 
+                                   value="<%= reservation.boatName %>" minlength="2" maxlength="100" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="startDate" class="form-label">Date de début *</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" 
+                                       value="<%= new Date(reservation.startDate).toISOString().split('T')[0] %>" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="endDate" class="form-label">Date de fin *</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" 
+                                       value="<%= new Date(reservation.endDate).toISOString().split('T')[0] %>" required>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Enregistrer les modifications
+                            </button>
+                            <a href="/catways/<%= catway.catwayNumber %>/reservations/<%= reservation._id %>" class="btn btn-secondary">
+                                <i class="bi bi-x-lg"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

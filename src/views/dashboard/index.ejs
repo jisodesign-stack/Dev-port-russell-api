@@ -1,0 +1,213 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid py-4">
+    <!-- En-tête du dashboard -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1">
+                        <i class="bi bi-speedometer2"></i> Tableau de Bord
+                    </h2>
+                    <p class="text-muted mb-0">
+                        <i class="bi bi-calendar-event"></i> <%= currentDate %>
+                    </p>
+                </div>
+                <div>
+                    <span class="badge bg-primary fs-6">
+                        <i class="bi bi-person"></i> <%= user.username %>
+                    </span>
+                    <span class="badge bg-secondary fs-6 ms-2">
+                        <i class="bi bi-envelope"></i> <%= user.email %>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cartes de statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card stat-card bg-primary text-white h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase mb-1">Catways</h6>
+                        <h2 class="mb-0"><%= stats.catways %></h2>
+                    </div>
+                    <i class="bi bi-life-preserver stat-icon"></i>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="/catways" class="text-white text-decoration-none">
+                        Voir les catways <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card stat-card bg-success text-white h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase mb-1">Réservations</h6>
+                        <h2 class="mb-0"><%= stats.reservations %></h2>
+                    </div>
+                    <i class="bi bi-calendar-check stat-icon"></i>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="/reservations" class="text-white text-decoration-none">
+                        Voir les réservations <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card stat-card bg-info text-white h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase mb-1">Utilisateurs</h6>
+                        <h2 class="mb-0"><%= stats.users %></h2>
+                    </div>
+                    <i class="bi bi-people stat-icon"></i>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="/users" class="text-white text-decoration-none">
+                        Voir les utilisateurs <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Réservations en cours -->
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-calendar-check"></i> Réservations en cours</span>
+                    <span class="badge bg-primary"><%= currentReservations.length %></span>
+                </div>
+                <div class="card-body">
+                    <% if (currentReservations.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Catway</th>
+                                        <th>Client</th>
+                                        <th>Bateau</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% currentReservations.forEach(function(reservation) { %>
+                                        <tr>
+                                            <td>
+                                                <a href="/catways/<%= reservation.catwayNumber %>" class="text-decoration-none">
+                                                    <span class="badge bg-secondary">#<%= reservation.catwayNumber %></span>
+                                                </a>
+                                            </td>
+                                            <td><%= reservation.clientName %></td>
+                                            <td><i class="bi bi-sailboat"></i> <%= reservation.boatName %></td>
+                                            <td><%= new Date(reservation.startDate).toLocaleDateString('fr-FR') %></td>
+                                            <td><%= new Date(reservation.endDate).toLocaleDateString('fr-FR') %></td>
+                                            <td>
+                                                <a href="/catways/<%= reservation.catwayNumber %>/reservations/<%= reservation._id %>" 
+                                                   class="btn btn-sm btn-outline-primary btn-action">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-calendar-x display-4"></i>
+                            <p class="mt-2">Aucune réservation en cours</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Réservations à venir -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-calendar-plus"></i> Prochaines réservations</span>
+                    <span class="badge bg-warning text-dark"><%= upcomingReservations.length %></span>
+                </div>
+                <div class="card-body">
+                    <% if (upcomingReservations.length > 0) { %>
+                        <ul class="list-group list-group-flush">
+                            <% upcomingReservations.forEach(function(reservation) { %>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="fw-bold">
+                                            <i class="bi bi-sailboat"></i> <%= reservation.boatName %>
+                                        </div>
+                                        <small class="text-muted">
+                                            Catway #<%= reservation.catwayNumber %> - <%= reservation.clientName %>
+                                        </small>
+                                    </div>
+                                    <span class="badge bg-info rounded-pill">
+                                        <%= new Date(reservation.startDate).toLocaleDateString('fr-FR') %>
+                                    </span>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-calendar-x display-4"></i>
+                            <p class="mt-2">Aucune réservation à venir</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accès rapide -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-lightning"></i> Accès rapide
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <a href="/catways/new" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="bi bi-plus-circle"></i><br>
+                                Nouveau Catway
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/catways" class="btn btn-outline-success btn-lg w-100">
+                                <i class="bi bi-calendar-plus"></i><br>
+                                Nouvelle Réservation
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/users/new" class="btn btn-outline-info btn-lg w-100">
+                                <i class="bi bi-person-plus"></i><br>
+                                Nouvel Utilisateur
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/api-docs" target="_blank" class="btn btn-outline-secondary btn-lg w-100">
+                                <i class="bi bi-file-code"></i><br>
+                                Documentation API
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
