@@ -2,6 +2,18 @@
 
 API de gestion du port de plaisance de Russell : catways, réservations et utilisateurs.
 
+## 🌐 Application Hébergée
+
+| Service | URL |
+|---------|-----|
+| **Application** | https://dev-port-russell-api-production.up.railway.app |
+| **Documentation API** | https://dev-port-russell-api-production.up.railway.app/api-docs |
+| **GitHub** | https://github.com/jisodesign-stack/Dev-port-russell-api |
+
+### Identifiants de connexion (compte admin)
+- **Email** : admin@port-russell.fr
+- **Mot de passe** : admin123
+
 ## 🚀 Fonctionnalités
 
 - Gestion des catways (CRUD)
@@ -34,12 +46,12 @@ npm run import-data
 npm run dev
 ```
 
-## 🌐 Accès
+## 🌐 Accès Local
 
 | Service | URL |
 |---------|-----|
-| Application | http://localhost:4000 |
-| API Docs | http://localhost:4000/api-docs |
+| Application | http://localhost:3000 |
+| API Docs | http://localhost:3000/api-docs |
 
 ## 🔗 Routes API
 
